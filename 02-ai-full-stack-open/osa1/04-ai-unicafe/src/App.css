@@ -1,0 +1,12 @@
+#root {
+  max-width: 1280px;
+}
+.text,
+.value {
+  display: inline-block;
+  width: 5rem;
+}
+.statisticline {
+  margin-block-start: 0.5rem;
+  margin-block-end: 0.5rem;
+}
