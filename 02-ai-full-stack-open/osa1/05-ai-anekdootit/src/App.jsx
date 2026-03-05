@@ -15,11 +15,19 @@ const App = () => {
   ];
 
   const [selected, setSelected] = useState(0);
+  const votes = Array(anecdotes.length).fill(0);
+  console.log(votes);
+
+  const handleNextAnecdoteClick = () => {
+    const randomIndex = Math.floor(Math.random() * anecdotes.length);
+    setSelected(randomIndex);
+  };
 
   return (
     <>
       <section>
         <p>{anecdotes[selected]}</p>
+        <button onClick={handleNextAnecdoteClick}>next anecdote</button>
       </section>
     </>
   );
