@@ -1,5 +1,8 @@
 import { useState } from "react";
 import "./App.css";
+import Filter from "./components/Filter";
+import PersonForm from "./components/PersonForm";
+import Persons from "./components/Persons";
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -39,7 +42,7 @@ const App = () => {
       return;
     }
 
-    setPersons(persons.concat({ name: newName }));
+    setPersons(persons.concat({ name: newName, number: newNumber }));
     setNewName("");
   };
 
@@ -47,32 +50,19 @@ const App = () => {
     <>
       <section>
         <h2>Phonepook</h2>
-        <p>
-          Filter: <input value={filter} onChange={handleFilterChange} />
-        </p>
+        <Filter filter={filter} handleFilterChange={handleFilterChange} />
         <h2>Add a new</h2>
-        <form onSubmit={addPerson}>
-          <p>
-            name: <input value={newName} onChange={handleNameChange} />
-          </p>
-          <p>
-            number: <input value={newNumber} onChange={handleNumberChange} />
-          </p>
-          <p>
-            <button type="submit">add</button>
-          </p>
-        </form>
+        <PersonForm
+          handleSubmit={addPerson}
+          newName={newName}
+          handleNameChange={handleNameChange}
+          newNumber={newNumber}
+          handleNumberChange={handleNumberChange}
+        />
       </section>
       <section>
         <h2>Numbers</h2>
-        <div>
-          {personsToShow.map((person) => (
-            <p key={person.name}>
-              <span className="name">{person.name}</span>{" "}
-              <span className="number">{person.number}</span>
-            </p>
-          ))}
-        </div>
+        <Persons persons={personsToShow} />
       </section>
     </>
   );
