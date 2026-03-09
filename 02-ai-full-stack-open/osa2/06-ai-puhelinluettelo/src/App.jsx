@@ -6,13 +6,31 @@ const App = () => {
 
   const [newName, setNewName] = useState("");
 
+  const handleNameChange = (event) => {
+    setNewName(event.target.value);
+    console.log(newName);
+  };
+
+  const addPerson = (event) => {
+    event.preventDefault();
+
+    // Check if name already exists
+    if (persons.some((person) => person.name === newName)) {
+      alert(`${newName} on jo puhelinluettelossa`);
+      return;
+    }
+
+    setPersons(persons.concat({ name: newName }));
+    setNewName("");
+  };
+
   return (
     <>
       <section>
         <h2>Phonepook</h2>
-        <form>
+        <form onSubmit={addPerson}>
           <p>
-            name: <input />
+            name: <input value={newName} onChange={handleNameChange} />
           </p>
           <p>
             <button type="submit">add</button>
@@ -21,6 +39,11 @@ const App = () => {
       </section>
       <section>
         <h2>Numbers</h2>
+        <div>
+          {persons.map((person) => (
+            <p key={person.name}>{person.name}</p>
+          ))}
+        </div>
       </section>
     </>
   );
