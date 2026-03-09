@@ -1,4 +1,4 @@
-import courses from "../courses.json";
+import courses from "./courses.json";
 
 const Header = ({ course }) => {
   return <h1>{course.name}</h1>;
