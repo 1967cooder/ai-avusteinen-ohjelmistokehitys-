@@ -1,20 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: "Arto Hellas", number: "040-123456" },
-    { name: "Ada Lovelace", number: "39-44-5323523" },
-    { name: "Dan Abramov", number: "12-43-234345" },
-    { name: "Mary Poppendieck", number: "39-23-6423122" },
-  ]);
+  const [persons, setPersons] = useState([]);
 
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
+
+  useEffect(() => {
+    fetch("http://localhost:3001/persons")
+      .then((response) => response.json())
+      .then((data) => setPersons(data));
+  }, []);
 
   const personsToShow = persons.filter((person) =>
     person.name.toLowerCase().includes(filter.toLowerCase()),
@@ -22,7 +23,6 @@ const App = () => {
 
   const handleNameChange = (event) => {
     setNewName(event.target.value);
-    console.log(newName);
   };
 
   const handleNumberChange = (event) => {
@@ -44,12 +44,13 @@ const App = () => {
 
     setPersons(persons.concat({ name: newName, number: newNumber }));
     setNewName("");
+    setNewNumber("");
   };
 
   return (
     <>
       <section>
-        <h2>Phonepook</h2>
+        <h2>Phonebook</h2>
         <Filter filter={filter} handleFilterChange={handleFilterChange} />
         <h2>Add a new</h2>
         <PersonForm
