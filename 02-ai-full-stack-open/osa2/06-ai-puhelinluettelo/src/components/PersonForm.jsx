@@ -8,10 +8,23 @@ const PersonForm = ({
   return (
     <form onSubmit={handleSubmit}>
       <p>
-        name: <input value={newName} onChange={handleNameChange} />
+        name:
+        <input
+          id="name"
+          name="name"
+          autoComplete="name"
+          value={newName}
+          onChange={handleNameChange}
+        />
       </p>
       <p>
-        number: <input value={newNumber} onChange={handleNumberChange} />
+        number:
+        <input
+          id="number"
+          name="number"
+          value={newNumber}
+          onChange={handleNumberChange}
+        />
       </p>
       <p>
         <button type="submit">add</button>
