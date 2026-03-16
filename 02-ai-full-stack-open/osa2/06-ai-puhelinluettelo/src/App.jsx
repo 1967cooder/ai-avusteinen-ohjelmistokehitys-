@@ -3,6 +3,7 @@ import "./App.css";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
+import personService from "./services/personService";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -12,9 +13,7 @@ const App = () => {
   const [filter, setFilter] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:3001/persons")
-      .then((response) => response.json())
-      .then((data) => setPersons(data));
+    personService.getAll().then((initialPersons) => setPersons(initialPersons));
   }, []);
 
   const personsToShow = persons.filter((person) =>
@@ -36,15 +35,18 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault();
 
-    // Check if name already exists
     if (persons.some((person) => person.name === newName)) {
       alert(`${newName} on jo puhelinluettelossa`);
       return;
     }
 
-    setPersons(persons.concat({ name: newName, number: newNumber }));
-    setNewName("");
-    setNewNumber("");
+    const personObject = { name: newName, number: newNumber };
+
+    personService.create(personObject).then((returnedPerson) => {
+      setPersons((prevPersons) => prevPersons.concat(returnedPerson));
+      setNewName("");
+      setNewNumber("");
+    });
   };
 
   return (

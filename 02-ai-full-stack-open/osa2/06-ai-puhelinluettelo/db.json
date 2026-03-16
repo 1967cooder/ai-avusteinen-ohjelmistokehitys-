@@ -1,8 +1,45 @@
 {
-	"persons": [
-		{ "id": 1, "name": "Arto Hellas", "number": "040-123456" },
-		{ "id": 2, "name": "Ada Lovelace", "number": "39-44-5323523" },
-		{ "id": 3, "name": "Dan Abramov", "number": "12-43-234345" },
-		{ "id": 4, "name": "Mary Poppendieck", "number": "39-23-6423122" }
-	]
+  "persons": [
+    {
+      "id": "1",
+      "name": "Arto Hellas",
+      "number": "040-123456"
+    },
+    {
+      "id": "2",
+      "name": "Ada Lovelace",
+      "number": "39-44-5323523"
+    },
+    {
+      "id": "3",
+      "name": "Dan Abramov",
+      "number": "12-43-234345"
+    },
+    {
+      "id": "4",
+      "name": "Mary Poppendieck",
+      "number": "39-23-6423122"
+    },
+    {
+      "id": "b781",
+      "name": "Silvana Lindholm",
+      "number": "8787"
+    },
+    {
+      "id": "a6d9",
+      "name": "Silvana ",
+      "number": "9989"
+    },
+    {
+      "id": "b95d",
+      "name": "s",
+      "number": "1"
+    },
+    {
+      "id": "887c",
+      "name": "Sisi",
+      "number": "7676"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
