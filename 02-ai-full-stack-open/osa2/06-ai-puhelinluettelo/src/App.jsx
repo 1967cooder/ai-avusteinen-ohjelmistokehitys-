@@ -35,18 +35,47 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault();
 
-    if (persons.some((person) => person.name === newName)) {
-      alert(`${newName} on jo puhelinluettelossa`);
+    const existingPerson = persons.find((person) => person.name === newName);
+    if (existingPerson) {
+      const updatedPerson = { ...existingPerson, number: newNumber };
+      const shouldUpdate = window.confirm(
+        `${existingPerson.name} is already added to phonebook, replace the old number with a new number ${newNumber}?`,
+      );
+
+      if (shouldUpdate) {
+        personService
+          .updatePersonNumber(updatedPerson)
+          .then((returnedPerson) => {
+            setPersons(
+              persons.map((person) =>
+                person.id !== returnedPerson.id ? person : returnedPerson,
+              ),
+            );
+            setNewName("");
+            setNewNumber("");
+          })
+          .catch(() => {
+            alert(
+              `Numeron paivitys epaonnistui henkilolle ${existingPerson.name}`,
+            );
+          });
+      }
+
       return;
     }
 
     const personObject = { name: newName, number: newNumber };
 
-    personService.create(personObject).then((addedPerson) => {
-      setPersons(persons.concat(addedPerson));
-      setNewName("");
-      setNewNumber("");
-    });
+    personService
+      .create(personObject)
+      .then((addedPerson) => {
+        setPersons(persons.concat(addedPerson));
+        setNewName("");
+        setNewNumber("");
+      })
+      .catch(() => {
+        alert(`Henkilon ${personObject.name} lisaaminen epaonnistui`);
+      });
   };
 
   const handleDelete = (p) => {
