@@ -72,7 +72,18 @@ const App = () => {
             setNewName("");
             setNewNumber("");
           })
-          .catch(() => {
+          .catch((error) => {
+            if (error.response?.status === 404) {
+              setPersons(
+                persons.filter((person) => person.id !== existingPerson.id),
+              );
+              ShowNotification(
+                `Information of ${existingPerson.name} has already been removed from server`,
+                "error",
+              );
+              return;
+            }
+
             ShowNotification(
               `Numeron paivitys epaonnistui henkilolle ${existingPerson.name}`,
               "error",
@@ -109,7 +120,16 @@ const App = () => {
           setPersons(persons.filter((person) => person.id !== p.id));
           ShowNotification(`Deleted ${p.name}`, "success");
         })
-        .catch(() => {
+        .catch((error) => {
+          if (error.response?.status === 404) {
+            setPersons(persons.filter((person) => person.id !== p.id));
+            ShowNotification(
+              `Information of ${p.name} has already been removed from server`,
+              "error",
+            );
+            return;
+          }
+
           ShowNotification(`Kayttajaa ${p.name} ei loydy taulukosta`, "error");
         });
     }
