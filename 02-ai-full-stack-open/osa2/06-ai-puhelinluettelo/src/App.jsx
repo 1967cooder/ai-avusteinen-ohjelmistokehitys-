@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import "./App.css";
+import "./index.css";
 import Filter from "./components/Filter";
+import Notification from "./components/Notification";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 import personService from "./services/personService";
@@ -11,6 +13,18 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
+  const [notificationMessage, setNotificationMessage] = useState("");
+  const [notificationType, setNotificationType] = useState("success");
+
+  const ShowNotification = useCallback((message, type) => {
+    setNotificationMessage(message);
+    setNotificationType(type);
+  }, []);
+
+  const handleNotificationClose = useCallback(() => {
+    setNotificationMessage("");
+    setNotificationType("success");
+  }, []);
 
   useEffect(() => {
     personService.getAll().then((initialPersons) => setPersons(initialPersons));
@@ -51,12 +65,17 @@ const App = () => {
                 person.id !== returnedPerson.id ? person : returnedPerson,
               ),
             );
+            ShowNotification(
+              `Updated ${returnedPerson.name}'s number`,
+              "success",
+            );
             setNewName("");
             setNewNumber("");
           })
           .catch(() => {
-            alert(
+            ShowNotification(
               `Numeron paivitys epaonnistui henkilolle ${existingPerson.name}`,
+              "error",
             );
           });
       }
@@ -70,11 +89,15 @@ const App = () => {
       .create(personObject)
       .then((addedPerson) => {
         setPersons(persons.concat(addedPerson));
+        ShowNotification(`Added ${addedPerson.name}`, "success");
         setNewName("");
         setNewNumber("");
       })
       .catch(() => {
-        alert(`Henkilon ${personObject.name} lisaaminen epaonnistui`);
+        ShowNotification(
+          `Henkilon ${personObject.name} lisaaminen epaonnistui`,
+          "error",
+        );
       });
   };
 
@@ -84,9 +107,10 @@ const App = () => {
         .remove(p.id)
         .then(() => {
           setPersons(persons.filter((person) => person.id !== p.id));
+          ShowNotification(`Deleted ${p.name}`, "success");
         })
         .catch(() => {
-          alert(`Kayttajaa ${p.name} ei loydy taulukosta`);
+          ShowNotification(`Kayttajaa ${p.name} ei loydy taulukosta`, "error");
         });
     }
   };
@@ -95,6 +119,11 @@ const App = () => {
     <>
       <section>
         <h2>Phonebook</h2>
+        <Notification
+          message={notificationMessage}
+          type={notificationType}
+          onClose={handleNotificationClose}
+        />
         <Filter filter={filter} handleFilterChange={handleFilterChange} />
         <h2>Add a new</h2>
         <PersonForm
