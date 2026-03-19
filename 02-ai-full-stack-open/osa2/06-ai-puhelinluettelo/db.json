@@ -31,14 +31,14 @@
       "number": "9989"
     },
     {
-      "id": "b95d",
-      "name": "s",
-      "number": "1"
-    },
-    {
       "id": "887c",
       "name": "Sisi",
       "number": "7676"
+    },
+    {
+      "id": "8b98",
+      "name": "kjdf",
+      "number": "123"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

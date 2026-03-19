@@ -42,11 +42,24 @@ const App = () => {
 
     const personObject = { name: newName, number: newNumber };
 
-    personService.create(personObject).then((returnedPerson) => {
-      setPersons((prevPersons) => prevPersons.concat(returnedPerson));
+    personService.create(personObject).then((addedPerson) => {
+      setPersons(persons.concat(addedPerson));
       setNewName("");
       setNewNumber("");
     });
+  };
+
+  const handleDelete = (p) => {
+    if (window.confirm(`Delete ${p.name} ?`)) {
+      personService
+        .remove(p.id)
+        .then(() => {
+          setPersons(persons.filter((person) => person.id !== p.id));
+        })
+        .catch(() => {
+          alert(`Kayttajaa ${p.name} ei loydy taulukosta`);
+        });
+    }
   };
 
   return (
@@ -65,7 +78,7 @@ const App = () => {
       </section>
       <section>
         <h2>Numbers</h2>
-        <Persons persons={personsToShow} />
+        <Persons persons={personsToShow} handleDelete={handleDelete} />
       </section>
     </>
   );
